@@ -9,6 +9,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -25,7 +26,7 @@ type JupagImpl struct {
 	apiUrl    string
 }
 
-func NewJupag() Jupag {
+func NewJupag(host string) Jupag {
 	timeout := 3000 * time.Millisecond
 	cl := httpclient.NewClient(
 		httpclient.WithHTTPTimeout(timeout),
@@ -33,9 +34,13 @@ func NewJupag() Jupag {
 		httpclient.WithRetrier(heimdall.NewRetrier(heimdall.NewConstantBackoff(500*time.Millisecond, 1000*time.Millisecond))),
 	)
 
+	if strings.TrimSpace(host) == "" {
+		host = "https://quote-api.jup.ag/v6"
+	}
+
 	return &JupagImpl{
 		jupagImpl: cl,
-		apiUrl:    "https://quote-api.jup.ag/v6",
+		apiUrl:    "",
 	}
 }
 
