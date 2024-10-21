@@ -40,7 +40,7 @@ func NewJupag(host string) Jupag {
 
 	return &JupagImpl{
 		jupagImpl: cl,
-		apiUrl:    "",
+		apiUrl:    host,
 	}
 }
 
