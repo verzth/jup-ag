@@ -24,9 +24,10 @@ type Jupag interface {
 type JupagImpl struct {
 	jupagImpl *httpclient.Client
 	apiUrl    string
+	debug     bool
 }
 
-func NewJupag(host string) Jupag {
+func NewJupag(host string, debug bool) Jupag {
 	timeout := 3000 * time.Millisecond
 	cl := httpclient.NewClient(
 		httpclient.WithHTTPTimeout(timeout),
@@ -41,6 +42,7 @@ func NewJupag(host string) Jupag {
 	return &JupagImpl{
 		jupagImpl: cl,
 		apiUrl:    host,
+		debug:     debug,
 	}
 }
 
@@ -81,6 +83,12 @@ func (c *JupagImpl) request(method, endpoint string, params, body any) (*http.Re
 // Quote returns a quote for a given input mint, output mint and amount
 func (c *JupagImpl) Quote(params QuoteParams) (*QuoteResponse, error) {
 	resp, err := c.request(http.MethodGet, fmt.Sprintf("%s%s", c.apiUrl, "/quote"), params, nil)
+
+	if c.debug {
+		fmt.Printf("Quote@Request %+v\n", params)
+		fmt.Printf("Quote@Response %+v %s\n", resp, err)
+	}
+
 	if err != nil {
 		return nil, fmt.Errorf("failed to make quote request: %w", err)
 	}
@@ -95,7 +103,9 @@ func (c *JupagImpl) Quote(params QuoteParams) (*QuoteResponse, error) {
 		return nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
-	fmt.Println("Response jsonStr", string(jsonStr))
+	if c.debug {
+		fmt.Println("Response jsonStr", string(jsonStr))
+	}
 
 	var quote QuoteResponse
 	if err = json.Unmarshal(jsonStr, &quote); err != nil {
@@ -108,6 +118,12 @@ func (c *JupagImpl) Quote(params QuoteParams) (*QuoteResponse, error) {
 // QuoteForSwap returns a quote for a given input mint, output mint and amount
 func (c *JupagImpl) QuoteForSwap(params QuoteParams) (*QuoteForSwapResponse, error) {
 	resp, err := c.request(http.MethodGet, fmt.Sprintf("%s%s", c.apiUrl, "/quote"), params, nil)
+
+	if c.debug {
+		fmt.Printf("QuoteForSwap@Request %+v\n", params)
+		fmt.Printf("QuoteForSwap@Response %+v %s\n", resp, err)
+	}
+
 	if err != nil {
 		return nil, fmt.Errorf("failed to make quote request: %w", err)
 	}
@@ -122,7 +138,9 @@ func (c *JupagImpl) QuoteForSwap(params QuoteParams) (*QuoteForSwapResponse, err
 		return nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
-	fmt.Println("Response jsonStr", string(jsonStr))
+	if c.debug {
+		fmt.Println("Response jsonStr", string(jsonStr))
+	}
 
 	var quote QuoteForSwapResponse
 	if err = json.Unmarshal(jsonStr, &quote); err != nil {
@@ -136,6 +154,12 @@ func (c *JupagImpl) QuoteForSwap(params QuoteParams) (*QuoteForSwapResponse, err
 // The caller is responsible for signing the transactions.
 func (c *JupagImpl) Swap(params SwapParams) (*SwapResponse, error) {
 	resp, err := c.request(http.MethodPost, fmt.Sprintf("%s%s", c.apiUrl, "/swap"), nil, params)
+
+	if c.debug {
+		fmt.Printf("Swap@Request %+v\n", params)
+		fmt.Printf("Swap@Response %+v %s\n", resp, err)
+	}
+
 	if err != nil {
 		return nil, fmt.Errorf("failed to make swap request: %w", err)
 	}
@@ -149,7 +173,9 @@ func (c *JupagImpl) Swap(params SwapParams) (*SwapResponse, error) {
 		return nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
-	fmt.Println("Response jsonStr", string(jsonStr))
+	if c.debug {
+		fmt.Println("Response jsonStr", string(jsonStr))
+	}
 
 	var swap SwapResponse
 	if err = json.Unmarshal(jsonStr, &swap); err != nil {
@@ -163,6 +189,12 @@ func (c *JupagImpl) Swap(params SwapParams) (*SwapResponse, error) {
 // The caller is responsible for signing the transactions.
 func (c *JupagImpl) SwapInstructions(params SwapParams) (*SwapInstructionsResponse, error) {
 	resp, err := c.request(http.MethodPost, fmt.Sprintf("%s%s", c.apiUrl, "/swap-instructions"), nil, params)
+
+	if c.debug {
+		fmt.Printf("SwapInstructions@Request %+v\n", params)
+		fmt.Printf("SwapInstructions@Response %+v %s\n", resp, err)
+	}
+
 	if err != nil {
 		return nil, fmt.Errorf("failed to make swap request: %w", err)
 	}
@@ -176,7 +208,9 @@ func (c *JupagImpl) SwapInstructions(params SwapParams) (*SwapInstructionsRespon
 		return nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
-	fmt.Println("Response jsonStr", string(jsonStr))
+	if c.debug {
+		fmt.Println("Response jsonStr", string(jsonStr))
+	}
 
 	var swap SwapInstructionsResponse
 	if err = json.Unmarshal(jsonStr, &swap); err != nil {
