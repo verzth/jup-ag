@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/gojek/heimdall/v7"
 	"github.com/gojek/heimdall/v7/httpclient"
+	"github.com/gojek/heimdall/v7/plugins"
 	"io"
 	"net/http"
 	"net/url"
@@ -34,6 +35,11 @@ func NewJupag(host string, debug bool) Jupag {
 		httpclient.WithRetryCount(1),
 		httpclient.WithRetrier(heimdall.NewRetrier(heimdall.NewConstantBackoff(500*time.Millisecond, 1000*time.Millisecond))),
 	)
+
+	if debug {
+		requestLogger := plugins.NewRequestLogger(nil, nil)
+		cl.AddPlugin(requestLogger)
+	}
 
 	if strings.TrimSpace(host) == "" {
 		host = "https://quote-api.jup.ag/v6"
