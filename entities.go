@@ -15,7 +15,8 @@ type QuoteParams struct {
 	OutputMint string `url:"outputMint"` // required
 	Amount     uint64 `url:"amount"`     // required
 
-	SwapMode            string `url:"swapMode,omitempty"` // Swap mode, default is ExactIn; Available values : ExactIn, ExactOut.
+	MaxAccounts         uint64 `url:"maxAccounts,omitempty"` // Max number of accounts to return
+	SwapMode            string `url:"swapMode,omitempty"`    // Swap mode, default is ExactIn; Available values : ExactIn, ExactOut.
 	SlippageBps         uint64 `url:"slippageBps,omitempty"`
 	FeeBps              uint64 `url:"feeBps,omitempty"`              // Fee BPS (only pass in if you want to charge a fee on this swap)
 	OnlyDirectRoutes    bool   `url:"onlyDirectRoutes,omitempty"`    // Only return direct routes (no hoppings and split trade)
@@ -96,53 +97,6 @@ type DynamicSlippage struct {
 // SwapResponse is the response from a swap request.
 type SwapResponse struct {
 	SwapTransaction string `json:"swapTransaction"` // base64 encoded transaction string
-}
-
-type T struct {
-	TokenLedgerInstruction    interface{} `json:"tokenLedgerInstruction"`
-	ComputeBudgetInstructions []struct {
-		ProgramId string        `json:"programId"`
-		Accounts  []interface{} `json:"accounts"`
-		Data      string        `json:"data"`
-	} `json:"computeBudgetInstructions"`
-	SetupInstructions []struct {
-		ProgramId string `json:"programId"`
-		Accounts  []struct {
-			Pubkey     string `json:"pubkey"`
-			IsSigner   bool   `json:"isSigner"`
-			IsWritable bool   `json:"isWritable"`
-		} `json:"accounts"`
-		Data string `json:"data"`
-	} `json:"setupInstructions"`
-	SwapInstruction struct {
-		ProgramId string `json:"programId"`
-		Accounts  []struct {
-			Pubkey     string `json:"pubkey"`
-			IsSigner   bool   `json:"isSigner"`
-			IsWritable bool   `json:"isWritable"`
-		} `json:"accounts"`
-		Data string `json:"data"`
-	} `json:"swapInstruction"`
-	CleanupInstruction          interface{}   `json:"cleanupInstruction"`
-	OtherInstructions           []interface{} `json:"otherInstructions"`
-	AddressLookupTableAddresses []string      `json:"addressLookupTableAddresses"`
-	PrioritizationFeeLamports   int           `json:"prioritizationFeeLamports"`
-	ComputeUnitLimit            int           `json:"computeUnitLimit"`
-	PrioritizationType          struct {
-		ComputeBudget struct {
-			MicroLamports          int `json:"microLamports"`
-			EstimatedMicroLamports int `json:"estimatedMicroLamports"`
-		} `json:"computeBudget"`
-	} `json:"prioritizationType"`
-	DynamicSlippageReport struct {
-		SlippageBps                  int         `json:"slippageBps"`
-		OtherAmount                  int64       `json:"otherAmount"`
-		SimulatedIncurredSlippageBps int         `json:"simulatedIncurredSlippageBps"`
-		AmplificationRatio           interface{} `json:"amplificationRatio"`
-		CategoryName                 string      `json:"categoryName"`
-		HeuristicMaxSlippageBps      int         `json:"heuristicMaxSlippageBps"`
-	} `json:"dynamicSlippageReport"`
-	SimulationError interface{} `json:"simulationError"`
 }
 
 type SwapInstructionsResponse struct {
