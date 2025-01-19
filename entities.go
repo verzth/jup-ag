@@ -22,6 +22,8 @@ type QuoteParams struct {
 	OnlyDirectRoutes    bool   `url:"onlyDirectRoutes,omitempty"`    // Only return direct routes (no hoppings and split trade)
 	AsLegacyTransaction bool   `url:"asLegacyTransaction,omitempty"` // Only return routes that can be done in a single legacy transaction. (Routes might be limited)
 	UserPublicKey       string `url:"userPublicKey,omitempty"`       // Public key of the user (only pass in if you want deposit and fee being returned, might slow down query)
+	Dexes               string `url:"dexes,omitempty"`               // Dexes to query, separated by comma. If not provided, all dexes will be queried.
+	ExcludeDexes        string `url:"excludeDexes,omitempty"`        // Dexes to exclude, separated by comma. If not provided, all dexes will be queried.
 }
 
 type QuoteResponse struct {
