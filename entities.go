@@ -89,11 +89,7 @@ type SwapParams struct {
 	UserPublicKey    string               `json:"userPublicKey"`
 	WrapAndUnwrapSol bool                 `json:"wrapAndUnwrapSol"`
 	QuoteResponse    QuoteForSwapResponse `json:"quoteResponse"`
-	DynamicSlippage  DynamicSlippage      `json:"dynamicSlippage"`
-}
-
-type DynamicSlippage struct {
-	MaxBps int `json:"maxBps"`
+	DynamicSlippage  bool                 `json:"dynamicSlippage"`
 }
 
 // SwapResponse is the response from a swap request.
