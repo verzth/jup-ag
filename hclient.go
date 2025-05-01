@@ -83,6 +83,10 @@ func (c *JupagImpl) request(method, endpoint string, params, body any) (*http.Re
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "application/json")
 
+	if method == http.MethodGet {
+		return c.jupagImpl.Get(completeUrl, req.Header)
+	}
+
 	return c.jupagImpl.Do(req)
 }
 
