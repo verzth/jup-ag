@@ -86,10 +86,11 @@ type QuoteForSwapResponse struct {
 
 // SwapParams are the parameters for a swap request.
 type SwapParams struct {
-	UserPublicKey    string               `json:"userPublicKey"`
-	WrapAndUnwrapSol bool                 `json:"wrapAndUnwrapSol"`
-	QuoteResponse    QuoteForSwapResponse `json:"quoteResponse"`
-	DynamicSlippage  bool                 `json:"dynamicSlippage"`
+	UserPublicKey           string               `json:"userPublicKey"`
+	DestinationTokenAccount string               `json:"destinationTokenAccount,omitempty"`
+	WrapAndUnwrapSol        bool                 `json:"wrapAndUnwrapSol"`
+	QuoteResponse           QuoteForSwapResponse `json:"quoteResponse"`
+	DynamicSlippage         bool                 `json:"dynamicSlippage"`
 }
 
 // SwapResponse is the response from a swap request.
