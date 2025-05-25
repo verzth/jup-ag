@@ -42,7 +42,7 @@ func NewJupag(host string, debug bool) Jupag {
 	}
 
 	if strings.TrimSpace(host) == "" {
-		host = "https://quote-api.jup.ag/v6"
+		host = "https://lite-api.jup.ag/swap/v1"
 	}
 
 	return &JupagImpl{

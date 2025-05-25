@@ -6,7 +6,7 @@ import (
 )
 
 func TestHclient(t *testing.T) {
-	cl := jupiter.NewJupag()
+	cl := jupiter.NewJupag("https://lite-api.jup.ag/swap/v1", true)
 
 	quote, err := cl.QuoteForSwap(jupiter.QuoteParams{
 		InputMint:           "2b1kV6DkPAnxd5ixfnxCpjxmKwqjjaYmCZfHsFu24GXo",
@@ -31,9 +31,7 @@ func TestHclient(t *testing.T) {
 		UserPublicKey:    "",
 		WrapAndUnwrapSol: false,
 		QuoteResponse:    *quote,
-		DynamicSlippage: jupiter.DynamicSlippage{
-			MaxBps: 50,
-		},
+		DynamicSlippage:  false,
 	})
 
 	if err != nil {

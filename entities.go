@@ -139,3 +139,9 @@ type Account struct {
 	IsSigner   bool   `json:"isSigner"`
 	IsWritable bool   `json:"isWritable"`
 }
+
+type LstApysParams struct{}
+
+type LstApysResponse struct {
+	Apys map[string]decimal.Decimal `json:"apys"`
+}
